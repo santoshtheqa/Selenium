@@ -1,15 +1,28 @@
 package functions;
 
+import org.openqa.selenium.WebDriver;
+
+import pages.HomePage;
+
+
 public class Functions {
 
+	public static WebDriver driver = null;
+	
 	public static void OpenHOmepage() {
-		base.openBrowser();
-		base.goToUrl("https://www.google.com");
-		base.closeBrowser();
+		driver = base.openBrowser();
+		base.goToUrl("https://ecommerce-playground.lambdatest.io/", driver);
+		
+		try {
+			HomePage.clickonlogin(driver);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void closeBrowser() {
-		base.closeBrowser();
+		base.closeBrowser(driver);
 	}
 	
 }
