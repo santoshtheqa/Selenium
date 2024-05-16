@@ -22,21 +22,23 @@ public class HomePage {
 	}
 	
 	static WebElement myaccountdropdown(WebDriver driver){
-		
 		element = driver.findElement(By.xpath("//a[@class='icon-left both nav-link dropdown-toggle']//span[contains(text(),' My account')]"));
 		return element;
 	}
 	
-	static WebElement loginButton(WebDriver driver){
-			
+	static WebElement loginButton(WebDriver driver){			
 		element = driver.findElement(By.xpath("//span[contains(text(),'Login')]"));
+		return element;
+	}
+	
+	static WebElement registerButton(WebDriver driver){			
+		element = driver.findElement(By.xpath("//span[contains(text(),'Register')]"));
 		return element;
 	}
 	
 	public static void clickonlogin(WebDriver driver) throws InterruptedException {
 		 action = new Actions(driver);
 		 action.moveToElement(myaccountdropdown(driver)).perform();
-//		myaccountdropdown(driver).click();
 		Thread.sleep(1000);
 		loginButton(driver).click();
 		Thread.sleep(2000);

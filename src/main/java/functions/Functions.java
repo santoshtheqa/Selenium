@@ -12,11 +12,14 @@ public class Functions {
 	public static void OpenHOmepage() {
 		driver = base.openBrowser();
 		base.goToUrl("https://ecommerce-playground.lambdatest.io/", driver);
-		
+	}
+	
+	public static void navigateToLoginPage(){
 		try {
 			HomePage.clickonlogin(driver);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+			System.out.println("exception while clicking on login button");
 			e.printStackTrace();
 		}
 	}
