@@ -3,10 +3,9 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
-public class HomePage {
+public class homePage {
 
 	static WebElement element = null;
 	static Actions action = null; 
@@ -36,11 +35,19 @@ public class HomePage {
 		return element;
 	}
 	
-	public static void clickonlogin(WebDriver driver) throws InterruptedException {
+	public static void clickOnLogin(WebDriver driver) throws InterruptedException {
 		 action = new Actions(driver);
 		 action.moveToElement(myaccountdropdown(driver)).perform();
 		Thread.sleep(1000);
 		loginButton(driver).click();
+		Thread.sleep(2000);
+	}
+	
+	public static void clickOnRegister(WebDriver driver) throws InterruptedException {
+		 action = new Actions(driver);
+		 action.moveToElement(myaccountdropdown(driver)).perform();
+		Thread.sleep(1000);
+		registerButton(driver).click();
 		Thread.sleep(2000);
 	}
 }

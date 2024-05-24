@@ -1,7 +1,5 @@
 package pages;
 
-import javax.lang.model.element.Element;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,7 +25,18 @@ public class loginPage {
 	}
 	static WebElement loginButton(WebDriver driver) {
 		// TODO Auto-generated method stub
-		element = driver.findElement(By.xpath(".//input[@value='Login']"));
+		element = driver.findElement(By.xpath("//input[@value='Login']"));
 		return element;
 	}
+	
+	public static void fillEmail(WebDriver driver, String email) {
+		
+		emialTextfield(driver).sendKeys(email);
+	}
+	
+	public static void fillPassword(WebDriver driver, String password) {
+		
+		passwordTextfield(driver).sendKeys(password);
+	}
+
 }
