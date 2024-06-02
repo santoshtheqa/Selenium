@@ -3,13 +3,19 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="GoogleSearchTest">
+      <class name="testcases.NewTest">
         <methods>
-          <include name="tearDown"/>
-          <include name="setUp"/>
-          <include name="testGoogleSearch"/>
+          <include name="afterSuite"/>
+          <include name="beforeSuite"/>
+          <include name="afterTest"/>
+          <include name="beforeTest"/>
+          <include name="afterClass"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+          <include name="f" invocation-numbers="0"/>
+          <include name="afterMethod"/>
         </methods>
-      </class> <!-- GoogleSearchTest -->
+      </class> <!-- testcases.NewTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

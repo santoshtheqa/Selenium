@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFactory;
@@ -33,18 +34,20 @@ public class base {
 	
 	
 	
-	public static HashMap<String,String> readtestData(String excelFilePath, String sheetName, int testCaseId) throws IOException {
+	public static HashMap<Object, Object> readtestData(String excelFilePath, String sheetName, int testCaseId) throws IOException {
 		// TODO Auto-generated method stub
 		 FileInputStream fileInputStream = new FileInputStream(new File(excelFilePath));
 	     XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
 		 XSSFSheet sheet = workbook.getSheet(sheetName);
 		 int cellCount = sheet.getRow(0).getLastCellNum();
 		 int i=0;
-		 HashMap<String, String> testData = new HashMap<String, String>();
+//		 testData = new Map<String, String>
+		 HashMap<Object, Object> testData = new HashMap<Object, Object>();
 	        while(i<cellCount) {
 	        	testData.put(sheet.getRow(0).getCell(i).toString(),sheet.getRow(testCaseId).getCell(i).toString());
 	        	i++;
 	        }
+	        workbook.close();
         	fileInputStream.close();
 	        return testData;
 		}

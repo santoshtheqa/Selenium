@@ -1,11 +1,12 @@
 package functions;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.WebDriver;
@@ -14,12 +15,13 @@ import pages.*;
 public class functions {
 
 	public static WebDriver driver = null;
-	public static HashMap<String, String> testData = null;
-	static String excelFilePath="C:/Automation/Selenium/src/main/java/testData/automationTestData.xlsx";
+	static HashMap<Object, Object> mytestData = null;
+//	public static Map<Object, Object> testData = null;
+	static String excelFilePath="C:\\Automation\\Selenium\\src\\test\\resources\\testData\\automationTestData.xlsx";
 	static String sheetName = "testData";
 	static int testCaseId = 1;
 	
-//	commented belw code as constructor is called when an object is created and 
+//	commented below code as constructor is called when an object is created and 
 //	in currently we are not creating object we are using static functionalities
 	
 //	public functions() throws IOException {
@@ -28,20 +30,88 @@ public class functions {
 //		testData = base.readtestData(excelFilePath, sheetName, testCaseId);
 //		
 //	}
-	public static HashMap<String, String> readExcel() throws IOException {
+	
+	public static HashMap<Object, Object> readExcel() throws IOException {
 		// TODO Auto-generated method stub
-		testData = base.readtestData(excelFilePath, sheetName, testCaseId);
-		return testData;
-		
+		HashMap<Object, Object> testData = base.readtestData(excelFilePath, sheetName, testCaseId);
+		return testData;	
 	}
 	
-	 public static String getTestData(HashMap<String, String> testData, String headerName) {
-			return testData.get(headerName);
+	 public static String getTestData(HashMap<Object, Object> mytestData2, String headerName) {
+			return (String) mytestData2.get(headerName);
 	}
-	
-	public static void OpenHOmepage() {
+
+	static int returnHeaderIndex(Sheet sheet, String headerName) {
+		// this would return the column number where the given header string is searched
+//		System.out.println("in returnHeaderIndex");
+		int cellCount = sheet.getRow(0).getLastCellNum();
+        int i=0, index=0;
+        while(i<cellCount) {
+        	if(sheet.getRow(0).getCell(i).getStringCellValue().equalsIgnoreCase(headerName))
+        	{
+//        		System.out.println("value of i ="+i);
+        		index=i;
+        		break;
+        	}
+        	else i++;
+        }
+//        System.out.println("out returnHeaderIndex with value"+ i);
+        return index;
+	}
+
+	 public static Object[][] dataProviderTestData(String excelFilePath, String sheetName, String testCaseType) throws IOException {
+			// return the Object[][] array based on the testcaseType 
+			 FileInputStream fileInputStream = new FileInputStream(new File(excelFilePath));
+			 XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+			  XSSFSheet sheet = workbook.getSheet(sheetName);
+			  int testcasetypeindex = returnHeaderIndex(sheet, "testType");
+			  int j=1, Objectsize = 0;
+			  while (j<=sheet.getLastRowNum()) {
+//				  System.out.println("ojectsize while loop with testcasetype = "+testCaseType);
+//				  System.out.println(sheet.getRow(j).getCell(testcasetypeindex).toString());
+//				  System.out.println(sheet.getRow(j).getCell(testcasetypeindex).toString().contains(testCaseType));
+				  if(sheet.getRow(j).getCell(testcasetypeindex).toString().contains(testCaseType)) {
+					  Objectsize++;
+				  }
+				j++;  
+			  }
+//			  System.out.println("object size" + Objectsize);
+//			  Object[][] testdata = new Object[Objectsize][sheet.getRow(0).getLastCellNum()];
+			  Object[][] testdata = new Object[Objectsize][1];
+//			  String [] testdatalist = new String[sheet.getRow(0).getLastCellNum()];
+			  j=1;
+//			  System.out.println("last row number"+sheet.getLastRowNum());
+//			  System.out.println("last cel number"+ sheet.getRow(0).getLastCellNum());
+			  while (j<=sheet.getLastRowNum()) {
+				  System.out.println(sheet.getRow(j).getCell(testcasetypeindex).toString());
+				  System.out.println(sheet.getRow(j).getCell(testcasetypeindex).toString().contains(testCaseType));
+			  if(sheet.getRow(j).getCell(testcasetypeindex).toString().contains(testCaseType)) {
+				 int cellCount = sheet.getRow(j).getLastCellNum();
+//				 int i=0;
+//				 System.out.println("in if");
+//			        while(i<cellCount) {
+//			        	System.out.println("header "+sheet.getRow(0).getCell(i).toString());
+//			        	System.out.println("value of j - "+ j +", j th "+ sheet.getRow(j).getCell(i).toString());
+//			        	testdata[j-1][i]= sheet.getRow(j).getCell(i).toString();
+//	//				   	testData.put(sheet.getRow(0).getCell(i).toString(),sheet.getRow(testCaseId).getCell(i).toString());
+//			        	i++;
+//			        }
+				 testdata[j-1][0] = base.readtestData(excelFilePath, sheetName, j);
+			  	}
+			  
+			  j++;
+			  }
+			  workbook.close();
+			  fileInputStream.close();
+			  return testdata;
+		}
+	 
+//	-----------------------------------------Pages FUnctionalities---------------------------
+	 
+	public static void OpenHomepage(HashMap<Object, Object> testData) {
+		mytestData = testData;
 		driver = base.openBrowser();
-		String url = testData.get("Url");
+		String url = (String) mytestData.get("Url");
 		base.goToUrl(url, driver);
 	}
 	
@@ -71,13 +141,13 @@ public class functions {
 	}
 	
 	public static void fillDetilasOnRegister() {
-		String firstName = getTestData(testData, "firstName");
-		String lastName =  getTestData(testData, "lastName");
-		String email =  getTestData(testData, "email");
-		String telephone =  getTestData(testData, "telephone");
-		String password =  getTestData(testData, "password");
-		String confirmPassword =  getTestData(testData, "confirmPassword"); 
-		String newsLetter =  getTestData(testData, "newsLetter");
+		String firstName = getTestData(mytestData, "firstName");
+		String lastName =  getTestData(mytestData, "lastName");
+		String email =  getTestData(mytestData, "email");
+		String telephone =  getTestData(mytestData, "telephone");
+		String password =  getTestData(mytestData, "password");
+		String confirmPassword =  getTestData(mytestData, "confirmPassword"); 
+		String newsLetter =  getTestData(mytestData, "newsLetter");
 		
 		registerPage.fillFirstName(driver, firstName);
 		registerPage.fillLastName(driver, lastName);
@@ -110,8 +180,8 @@ public class functions {
 	
 	public static void fillDetilasOnLoginPage() {
 		
-		String Email = getTestData(testData, "Email");
-		String Password =  getTestData(testData, "Password");
+		String Email = getTestData(mytestData, "Email");
+		String Password =  getTestData(mytestData, "Password");
 		
 		loginPage.fillEmail(driver, Email);
 		loginPage.fillPassword(driver, Password);
