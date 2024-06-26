@@ -91,7 +91,7 @@ public class LoginTest extends Utilities{
 //	  BaseUtility.mywait(driver, 10);
 	  try {
 		Thread.sleep(4000);
-	} catch (InterruptedException e) {
+	} catch (InterruptedException e) { 
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
